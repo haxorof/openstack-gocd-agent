@@ -1,0 +1,70 @@
+{
+  "variables": {
+    "source_image_name": "artful-server-cloudimg-amd64",
+    "image_name": "gocd-agent-ubuntu-artful",
+    "ssh_username": "ubuntu",
+    "os_flavor": "m1.smaller",
+    "os_floating_ip_pool": "public",
+    "os_config_drive": "true",
+    "os_security_groups": "gcd_agent_builder",
+    "os_auth_url": "{{env `OS_AUTH_URL`}}",
+    "os_tenant_name": "{{env `OS_TENANT_NAME`}}",
+    "os_domain_name": "{{env `OS_DOMAIN_NAME`}}",
+    "os_region_name": "{{env `OS_REGION_NAME`}}",
+    "os_username": "{{env `OS_USERNAME`}}",
+    "os_password": "{{env `OS_PASSWORD`}}",
+    "os_insecure": "{{env `OS_INSECURE`}}"
+  },
+  "builders": [
+    {
+      "type": "openstack",
+      "ssh_username": "{{user `ssh_username`}}",
+      "image_name": "{{user `image_name`}}",
+      "config_drive": "{{user `os_config_drive`}}",
+      "source_image_name": "{{user `source_image_name`}}",
+      "identity_endpoint": "{{user `os_auth_url`}}",
+      "tenant_name": "{{user `os_tenant_name`}}",
+      "domain_name": "{{user `os_domain_name`}}",
+      "region": "{{user `os_region_name`}}",
+      "username": "{{user `os_username`}}",
+      "password": "{{user `os_password`}}",
+      "flavor": "{{user `os_flavor`}}",
+      "insecure": "{{user `os_insecure`}}",
+      "floating_ip_pool": "{{user `os_floating_ip_pool`}}",
+      "security_groups": "{{user `os_security_groups`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "echo '--> Upgrading packages'",
+        "sudo apt-get update",
+        "sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\""
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo '--> Installing GoCD Agent'",
+        "echo \"deb https://download.gocd.org /\" | sudo tee /etc/apt/sources.list.d/gocd.list",
+        "sudo apt-key adv --fetch-keys https://download.gocd.org/GOCD-GPG-KEY.asc",
+        "sudo apt-get update",
+        "sudo apt-get -y install openjdk-8-jre go-agent",
+        "# Waiting for PR: https://github.com/gocd-contrib/openstack-elastic-agent-tools/pull/1",
+        "# Temporary URL used insted of: https://raw.githubusercontent.com/gocd-contrib/openstack-elastic-agent-tools/master/cloudinit/cc_openstack_gocd.py",
+        "sudo wget -O /usr/lib/python3/dist-packages/cloudinit/config/cc_openstack_gocd.py https://raw.githubusercontent.com/ai-traders/openstack-elastic-agent-tools/4cf4c006e5cf611f9dc03694417daeb593fe8512/cloudinit/cc_openstack_gocd.py",
+        "sed -e '/cloud_final_modules:/a\\' -e ' - openstack_gocd' /etc/cloud/cloud.cfg | sudo tee /etc/cloud/cloud.cfg",
+        "echo '--> Allowing go user full sudo rights'",
+        "sudo echo 'go ALL=(ALL) NOPASSWD:ALL' | sudo tee --append /etc/sudoers"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo apt-get -y autoremove",
+        "sudo apt-get clean all"
+      ]
+    }
+  ]
+}
