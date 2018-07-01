@@ -6,7 +6,7 @@
     "os_flavor": "m1.smaller",
     "os_floating_ip_pool": "public",
     "os_config_drive": "true",
-    "os_security_groups": "default",
+    "os_security_groups": "gcd_agent_builder",
     "os_auth_url": "{{env `OS_AUTH_URL`}}",
     "os_tenant_name": "{{env `OS_TENANT_NAME`}}",
     "os_domain_name": "{{env `OS_DOMAIN_NAME`}}",
