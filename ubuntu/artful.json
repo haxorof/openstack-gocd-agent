@@ -7,13 +7,8 @@
     "os_floating_ip_pool": "public",
     "os_config_drive": "true",
     "os_security_groups": "gcd_agent_builder",
-    "os_auth_url": "{{env `OS_AUTH_URL`}}",
-    "os_tenant_name": "{{env `OS_TENANT_NAME`}}",
-    "os_domain_name": "{{env `OS_DOMAIN_NAME`}}",
-    "os_region_name": "{{env `OS_REGION_NAME`}}",
-    "os_username": "{{env `OS_USERNAME`}}",
-    "os_password": "{{env `OS_PASSWORD`}}",
-    "os_insecure": "{{env `OS_INSECURE`}}"
+    "os_insecure": "{{env `OS_INSECURE`}}",
+    "os_cloud": "{{env `OS_CLOUD`}}"
   },
   "builders": [
     {
@@ -21,17 +16,17 @@
       "ssh_username": "{{user `ssh_username`}}",
       "image_name": "{{user `image_name`}}",
       "config_drive": "{{user `os_config_drive`}}",
-      "source_image_name": "{{user `source_image_name`}}",
-      "identity_endpoint": "{{user `os_auth_url`}}",
-      "tenant_name": "{{user `os_tenant_name`}}",
-      "domain_name": "{{user `os_domain_name`}}",
-      "region": "{{user `os_region_name`}}",
-      "username": "{{user `os_username`}}",
-      "password": "{{user `os_password`}}",
+      "source_image_filter": {
+        "filters": {
+          "name": "{{user `source_image_name`}}"
+        },
+        "most_recent": true
+      },
       "flavor": "{{user `os_flavor`}}",
-      "insecure": "{{user `os_insecure`}}",
       "floating_ip_pool": "{{user `os_floating_ip_pool`}}",
-      "security_groups": "{{user `os_security_groups`}}"
+      "security_groups": "{{user `os_security_groups`}}",
+      "insecure": "{{user `os_insecure`}}",
+      "cloud": "{{user `os_cloud`}}"
     }
   ],
   "provisioners": [
@@ -51,5 +46,5 @@
       "output": "manifest.json",
       "strip_path": true
     }
-  ]  
+  ]
 }
