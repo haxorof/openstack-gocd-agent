@@ -4,4 +4,4 @@ echo "deb https://download.virtualbox.org/virtualbox/debian artful contrib" | su
 sudo apt-key adv --fetch-keys https://www.virtualbox.org/download/oracle_vbox_2016.asc
 sudo apt-key adv --fetch-keys https://www.virtualbox.org/download/oracle_vbox.asc
 sudo apt-get update
-sudo apt-get -y install virtualbox-6.0
+sudo apt-get -y install virtualbox-5.2
