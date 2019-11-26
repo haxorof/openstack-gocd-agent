@@ -7,6 +7,12 @@
     "os_floating_ip_pool": "public",
     "os_config_drive": "true",
     "os_security_groups": "gcd_agent_builder",
+    "os_auth_url": "{{env `OS_AUTH_URL`}}",
+    "os_tenant_name": "{{env `OS_TENANT_NAME`}}",
+    "os_domain_name": "{{env `OS_DOMAIN_NAME`}}",
+    "os_region_name": "{{env `OS_REGION_NAME`}}",
+    "os_username": "{{env `OS_USERNAME`}}",
+    "os_password": "{{env `OS_PASSWORD`}}",
     "os_insecure": "{{env `OS_INSECURE`}}",
     "os_cloud": "{{env `OS_CLOUD`}}"
   },
@@ -25,6 +31,12 @@
       "flavor": "{{user `os_flavor`}}",
       "floating_ip_pool": "{{user `os_floating_ip_pool`}}",
       "security_groups": "{{user `os_security_groups`}}",
+      "identity_endpoint": "{{user `os_auth_url`}}",
+      "tenant_name": "{{user `os_tenant_name`}}",
+      "domain_name": "{{user `os_domain_name`}}",
+      "region": "{{user `os_region_name`}}",
+      "username": "{{user `os_username`}}",
+      "password": "{{user `os_password`}}",
       "insecure": "{{user `os_insecure`}}",
       "cloud": "{{user `os_cloud`}}"
     }
