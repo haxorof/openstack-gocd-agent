@@ -1,6 +1,6 @@
 {
   "variables": {
-    "source_image_name": "eoan-server-cloudimg-amd64",
+    "source_image_name": "bionic-server-cloudimg-amd64",
     "image_name": "gocd-agent-ubuntu",
     "ssh_username": "ubuntu",
     "os_flavor": "m1.smaller",
