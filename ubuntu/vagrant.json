@@ -32,6 +32,7 @@
       "floating_ip_pool": "{{user `os_floating_ip_pool`}}",
       "security_groups": "{{user `os_security_groups`}}",
       "identity_endpoint": "{{user `os_auth_url`}}",
+      "image_visibility": "private",
       "tenant_name": "{{user `os_tenant_name`}}",
       "domain_name": "{{user `os_domain_name`}}",
       "region": "{{user `os_region_name`}}",
